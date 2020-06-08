@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import { Li } from "./components/Li/Li";
+
 import "./App.css";
 
 const interpretations = new Map();
@@ -59,29 +62,32 @@ function App() {
   return (
     <div className="App">
       <h1>IMC</h1>
-      <form>
-        <input
-          onChange={handleChange}
-          name="weight"
-          type="number"
-          placeholder="poids en kg"
-        />
-        <input
-          onChange={handleChange}
-          name="size"
-          type="number"
-          placeholder="taille en m"
-        />
-        <button onClick={handleClick}>Sauver</button>
-      </form>
 
-      <div className="interpretation">{imc && <div>{imc}</div>}</div>
+      <div className="wrapper">
+        <form>
+          <input
+            onChange={handleChange}
+            name="weight"
+            type="number"
+            placeholder="poids en kg"
+          />
+          <input
+            onChange={handleChange}
+            name="size"
+            type="number"
+            placeholder="taille en m"
+          />
+          <button onClick={handleClick}>Sauver</button>
+        </form>
 
-      <ul>
-        {imcs.map((i) => (
-          <li key={i}>{i}</li>
-        ))}
-      </ul>
+        <div className="interpretation">{imc && <div>{imc}</div>}</div>
+
+        <ul>
+          {imcs.map((i) => (
+            <Li key={i} imc={i} />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
