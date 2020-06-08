@@ -11,6 +11,11 @@ interpretations.set(40, "obésité sévère");
 interpretations.set("infinity", "obésité morbide ou massive");
 
 function App() {
+  const [imcs, setImcs] = useState(
+    window.localStorage.getItem("imcs")
+      ? JSON.parse(window.localStorage.getItem("imcs"))
+      : []
+  );
   const [imc, setImc] = useState(undefined);
 
   const handleChange = (evt) => {
@@ -31,8 +36,24 @@ function App() {
         }
       });
 
-      setImc(imc + " " + theInterpretation);
+      setImc(
+        new Date().toLocaleDateString("fr-FR") +
+          " " +
+          imc +
+          " " +
+          theInterpretation
+      );
     }
+  };
+
+  const handleClick = (evt) => {
+    evt.preventDefault();
+
+    const newImcs = [imc, ...imcs];
+
+    setImcs(newImcs);
+
+    window.localStorage.setItem("imcs", JSON.stringify(newImcs));
   };
 
   return (
@@ -51,17 +72,15 @@ function App() {
           type="number"
           placeholder="taille en m"
         />
-        <button>Sauver</button>
+        <button onClick={handleClick}>Sauver</button>
       </form>
 
-      <div className="interpretation">
-        onChange --> imc xx --> interprétation
-        {imc && <div>{imc}</div>}
-      </div>
+      <div className="interpretation">{imc && <div>{imc}</div>}</div>
 
       <ul>
-        <li>Date xx/xx/xxxx imc interpretation x</li>
-        <li>Date xx/xx/xxxx imc interpretation x</li>
+        {imcs.map((i) => (
+          <li key={i}>{i}</li>
+        ))}
       </ul>
     </div>
   );
